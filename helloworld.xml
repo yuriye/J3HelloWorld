@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.2.0" method="upgrade">
 
-    <name>Hello World!</name>
+    <name>COM_HELLOWORLD</name>
     <!-- The following elements are optional and free of formatting constraints -->
-    <creationDate>December 2013</creationDate>
+    <creationDate>February 2015</creationDate>
     <author>John Doe</author>
     <authorEmail>john.doe@example.org</authorEmail>
     <authorUrl>http://www.example.org</authorUrl>
     <copyright>Copyright Info</copyright>
     <license>License Info</license>
     <!--  The version string is recorded in the components table -->
-    <version>0.0.11</version>
+    <version>0.0.12</version>
     <!-- The description is optional and defaults to the name -->
     <description>COM_HELLOWORLD_DESCRIPTION</description>
 
@@ -24,8 +24,7 @@
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
-
-    <update> <!-- Runs on updates; New since J2.5 -->
+    <update> <!-- Runs on update; New since J2.5 -->
         <schemas>
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
@@ -54,7 +53,7 @@
 
     <administration>
         <!-- Administration Menu Section -->
-        <menu link='index.php?option=com_helloworld' img="../media/com_helloworld/images/Tux-16x16.png">COM_HELLOWORLD_MENU</menu>
+        <menu link='index.php?option=com_helloworld' img="../media/com_helloworld/images/tux-16x16.png">COM_HELLOWORLD_MENU</menu>
         <!-- Administration Main File Copy Section -->
         <!-- Note the folder attribute: This attribute describes the folder
             to copy FROM in the package to install therefore files copied
@@ -64,6 +63,7 @@
             <filename>index.html</filename>
             <filename>helloworld.php</filename>
             <filename>controller.php</filename>
+            <filename>access.xml</filename>
             <!-- SQL files section -->
             <folder>sql</folder>
             <!-- tables files section -->
@@ -74,6 +74,8 @@
             <folder>views</folder>
             <!-- controllers files section -->
             <folder>controllers</folder>
+            <!-- helpers files section -->
+            <folder>helpers</folder>
         </files>
         <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_helloworld.ini</language>
