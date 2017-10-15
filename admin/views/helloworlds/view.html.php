@@ -23,6 +23,8 @@ class HelloWorldViewHelloWorlds extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 *
+	 * @since 0.0.1
 	 */
 	function display($tpl = null)
 	{
