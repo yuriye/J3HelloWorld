@@ -6,86 +6,94 @@
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * HelloWorldList Model
+ * HelloWorlds View
  *
  * @since  0.0.1
  */
-class HelloWorldModelHelloWorlds extends JModelList
+class HelloWorldViewHelloWorlds extends JViewLegacy
 {
 	/**
-	 * Constructor.
+	 * Display the Hello World view
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @see     JController
-	 * @since   1.6
-	 */
-	public function __construct($config = array())
-	{
-		if (empty($config['filter_fields']))
-		{
-			$config['filter_fields'] = array(
-				'id',
-				'greeting',
-				'published'
-			);
-		}
-
-		parent::__construct($config);
-	}
-
-	/**
-	 * Method to build an SQL query to load the list data.
-	 *
-	 * @return      string  An SQL query
+	 * @return  void
 	 *
 	 * @since  0.0.1
 	 */
-	protected function getListQuery()
+
+	function display($tpl = null)
 	{
-		// Initialize variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
 
-		// Create the base select statement.
-		$query->select('a.id as id, a.greeting as greeting, a.published as published')
-			->from($db->quoteName('#__helloworld', 'a'));
+		// Get application
+		$app = JFactory::getApplication();
+		$context = "helloworld.list.admin.helloworld";
+		// Get data from the model
+		$this->items			= $this->get('Items');
+		$this->pagination		= $this->get('Pagination');
+		$this->state			= $this->get('State');
+		$this->filter_order 	= $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'greeting', 'cmd');
+		$this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'asc', 'cmd');
+		$this->filterForm    	= $this->get('FilterForm');
+		$this->activeFilters 	= $this->get('ActiveFilters');
 
-		// Join over the categories.
-		$query->select($db->quoteName('c.title', 'category_title'))
-			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid');
-
-		// Filter: like / search
-		$search = $this->getState('filter.search');
-
-		if (!empty($search))
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
 		{
-			$like = $db->quote('%' . $search . '%');
-			$query->where('greeting LIKE ' . $like);
+			JError::raiseError(500, implode('<br />', $errors));
+
+			return false;
 		}
 
-		// Filter by published state
-		$published = $this->getState('filter.published');
+		// Set the submenu
+		HelloWorldHelper::addSubmenu('helloworlds');
 
-		if (is_numeric($published))
+		// Set the toolbar and number of found items
+		$this->addToolBar();
+
+		// Display the template
+		parent::display($tpl);
+
+		// Set the document
+		$this->setDocument();
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function addToolBar()
+	{
+		$title = JText::_('COM_HELLOWORLD_MANAGER_HELLOWORLDS');
+
+		if ($this->pagination->total)
 		{
-			$query->where('a.published = ' . (int) $published);
-		}
-		elseif ($published === '')
-		{
-			$query->where('(a.published IN (0, 1))');
+			$title .= "<span style='font-size: 0.5em; vertical-align: middle;'>(" . $this->pagination->total . ")</span>";
 		}
 
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'greeting');
-		$orderDirn 	= $this->state->get('list.direction', 'asc');
-
-		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
-
-		return $query;
+		JToolBarHelper::title($title, 'helloworld');
+		JToolBarHelper::addNew('helloworld.add');
+		JToolBarHelper::editList('helloworld.edit');
+		JToolBarHelper::deleteList('', 'helloworlds.delete');
+	}
+	/**
+	 * Method to set up the document properties
+	 *
+	 * @return void
+	 *
+	 * @since 0.0.1
+	 */
+	protected function setDocument()
+	{
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_HELLOWORLD_ADMINISTRATION'));
 	}
 }
