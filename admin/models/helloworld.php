@@ -66,14 +66,11 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 	 * Method to get the script that have to be included on the form
 	 *
 	 * @return string	Script files
-	 *
-	 * @since   1.6
 	 */
 	public function getScript()
 	{
 		return 'administrator/components/com_helloworld/models/forms/helloworld.js';
 	}
-
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -95,5 +92,15 @@ class HelloWorldModelHelloWorld extends JModelAdmin
 		}
 
 		return $data;
+	}
+	/**
+	 * Method to check if it's OK to delete a message. Overrides JModelAdmin::canDelete
+	 */
+	protected function canDelete($record)
+	{
+		if( !empty( $record->id ) )
+		{
+			return JFactory::getUser()->authorise( "core.delete", "com_helloworld.helloworld." . $record->id );
+		}
 	}
 }
