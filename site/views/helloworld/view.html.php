@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_helloworld
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -18,17 +18,18 @@ defined('_JEXEC') or die('Restricted access');
 class HelloWorldViewHelloWorld extends JViewLegacy
 {
 	/**
-	 * @since 2017
-	 *
 	 * Display the Hello World view
 	 *
-	 * @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
+	 *
+	 * @since 0.0.1
 	 */
 	function display($tpl = null)
 	{
-		$this->msg = $this->get('Msg');
+		// Assign data to the view
+		$this->item = $this->get('Item');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -37,6 +38,7 @@ class HelloWorldViewHelloWorld extends JViewLegacy
 
 			return false;
 		}
+
 		// Display the view
 		parent::display($tpl);
 	}

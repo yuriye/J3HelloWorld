@@ -83,6 +83,7 @@ class HelloWorldViewHelloWorlds extends JViewLegacy
 		JToolBarHelper::addNew('helloworld.add');
 		JToolBarHelper::editList('helloworld.edit');
 		JToolBarHelper::deleteList('', 'helloworlds.delete');
+		JToolBarHelper::preferences('com_helloworld');
 	}
 	/**
 	 * Method to set up the document properties
